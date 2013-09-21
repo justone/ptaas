@@ -10,9 +10,15 @@ run curl http://www.hiawatha-webserver.org/files/hiawatha-9.2.tar.gz > /hiawatha
 run bash -c "cd /hiawatha; tar -xzvf hiawatha-9.2.tar.gz; mkdir /hiawatha/hiawatha-9.2/build"
 run bash -c "cd /hiawatha/hiawatha-9.2/build; cmake ..; make install/strip"
 
+run DEBIAN_FRONTEND=noninteractive apt-get install libyaml-perl libfile-slurp-perl -y
+
 add hiawatha.conf /usr/local/etc/hiawatha/hiawatha.conf
 add tidy.pl /usr/local/var/www/hiawatha/tidy.pl
 run chmod +x /usr/local/var/www/hiawatha/tidy.pl
+
+add . /ptaas
+run chmod +x /ptaas/build.pl
+run /ptaas/build.pl
 
 expose 80
 cmd ["/usr/local/sbin/hiawatha", "-d"]
